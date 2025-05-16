@@ -17,7 +17,7 @@ from groq import Groq
 st.title("Concrete Strength Analysis App")
 
 # Initialize Groq client (replace with your Groq API key)
-groq_client = Groq(api_key="your_groq_api_key_here")
+groq_client = Groq(api_key="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")
 
 uploaded_file = st.file_uploader("Upload your Excel file (XLSX format)", type=["xlsx"])
 
@@ -480,7 +480,7 @@ if uploaded_file is not None:
                 st.write(explanation)
             except Exception as e:
                 st.error(f"Error generating explanation: {str(e)}")
-                st.write("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")
+                st.write("Please ensure your Groq API key is correctly set and try again. You can get an API key from https://x.ai/api.")
 
 else:
     st.write("Please upload an Excel file to begin analysis.")
