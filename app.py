@@ -40,11 +40,12 @@ if uploaded_file is not None:
         "XGBoost",
         "AdaBoost",
         "SHAP Analysis",
-        "Combined Actual vs Predicted"
+        "Combined Actual vs Predicted",
+        "Actual vs Predicted (All Models)"
     ]
     selected_analysis = st.selectbox("Select Analysis Type", analysis_options)
     
-    if selected_analysis in ["Random Forest", "Decision Tree", "KNN", "XGBoost", "AdaBoost", "SHAP Analysis", "Combined Actual vs Predicted"]:
+    if selected_analysis in ["Random Forest", "Decision Tree", "KNN", "XGBoost", "AdaBoost", "SHAP Analysis", "Combined Actual vs Predicted", "Actual vs Predicted (All Models)"]:
         X = df.drop('concrete_compressive_strength', axis=1)
         y = df['concrete_compressive_strength']
         X = X.fillna(X.mean())
@@ -110,6 +111,21 @@ if uploaded_file is not None:
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "random_forest_predictions"), unsafe_allow_html=True)
         plt.close(fig)
+        
+        fig2, ax2 = plt.subplots(figsize=(10, 6))
+        indices = range(len(y_train) + len(y_test))
+        y_actual = pd.concat([pd.Series(y_train), pd.Series(y_test)]).reset_index(drop=True)
+        ax2.plot(range(len(y_train)), y_train, label='Train Actual', color='green')
+        ax2.plot(range(len(y_train)), y_train_pred, label=f'Train Predicted (R² = {r2_train:.3f})', color='blue', linestyle='--')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test, label='Test Actual', color='purple')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test_pred, label=f'Test Predicted (R² = {r2_test:.3f})', color='red', linestyle='--')
+        ax2.set_xlabel("Sample Index")
+        ax2.set_ylabel("Concrete Strength (MPa)")
+        ax2.set_title("Random Forest: Actual vs Predicted (Combined)")
+        ax2.legend(loc='upper left')
+        st.pyplot(fig2)
+        st.markdown(get_image_download_link(fig2, "random_forest_combined"), unsafe_allow_html=True)
+        plt.close(fig2)
     
     elif selected_analysis == "Decision Tree":
         st.subheader("Decision Tree Regression")
@@ -141,6 +157,21 @@ if uploaded_file is not None:
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "decision_tree_predictions"), unsafe_allow_html=True)
         plt.close(fig)
+        
+        fig2, ax2 = plt.subplots(figsize=(10, 6))
+        indices = range(len(y_train) + len(y_test))
+        y_actual = pd.concat([pd.Series(y_train), pd.Series(y_test)]).reset_index(drop=True)
+        ax2.plot(range(len(y_train)), y_train, label='Train Actual', color='green')
+        ax2.plot(range(len(y_train)), y_train_pred, label=f'Train Predicted (R² = {r2_train:.3f})', color='blue', linestyle='--')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test, label='Test Actual', color='purple')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test_pred, label=f'Test Predicted (R² = {r2_test:.3f})', color='red', linestyle='--')
+        ax2.set_xlabel("Sample Index")
+        ax2.set_ylabel("Concrete Strength (MPa)")
+        ax2.set_title("Decision Tree: Actual vs Predicted (Combined)")
+        ax2.legend(loc='upper left')
+        st.pyplot(fig2)
+        st.markdown(get_image_download_link(fig2, "decision_tree_combined"), unsafe_allow_html=True)
+        plt.close(fig2)
     
     elif selected_analysis == "KNN":
         st.subheader("K-Nearest Neighbors Regression")
@@ -172,6 +203,21 @@ if uploaded_file is not None:
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "knn_predictions"), unsafe_allow_html=True)
         plt.close(fig)
+        
+        fig2, ax2 = plt.subplots(figsize=(10, 6))
+        indices = range(len(y_train) + len(y_test))
+        y_actual = pd.concat([pd.Series(y_train), pd.Series(y_test)]).reset_index(drop=True)
+        ax2.plot(range(len(y_train)), y_train, label='Train Actual', color='green')
+        ax2.plot(range(len(y_train)), y_train_pred, label=f'Train Predicted (R² = {r2_train:.3f})', color='blue', linestyle='--')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test, label='Test Actual', color='purple')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test_pred, label=f'Test Predicted (R² = {r2_test:.3f})', color='red', linestyle='--')
+        ax2.set_xlabel("Sample Index")
+        ax2.set_ylabel("Concrete Strength (MPa)")
+        ax2.set_title("KNN: Actual vs Predicted (Combined)")
+        ax2.legend(loc='upper left')
+        st.pyplot(fig2)
+        st.markdown(get_image_download_link(fig2, "knn_combined"), unsafe_allow_html=True)
+        plt.close(fig2)
     
     elif selected_analysis == "XGBoost":
         st.subheader("XGBoost Regression")
@@ -203,6 +249,21 @@ if uploaded_file is not None:
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "xgboost_predictions"), unsafe_allow_html=True)
         plt.close(fig)
+        
+        fig2, ax2 = plt.subplots(figsize=(10, 6))
+        indices = range(len(y_train) + len(y_test))
+        y_actual = pd.concat([pd.Series(y_train), pd.Series(y_test)]).reset_index(drop=True)
+        ax2.plot(range(len(y_train)), y_train, label='Train Actual', color='green')
+        ax2.plot(range(len(y_train)), y_train_pred, label=f'Train Predicted (R² = {r2_train:.3f})', color='blue', linestyle='--')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test, label='Test Actual', color='purple')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test_pred, label=f'Test Predicted (R² = {r2_test:.3f})', color='red', linestyle='--')
+        ax2.set_xlabel("Sample Index")
+        ax2.set_ylabel("Concrete Strength (MPa)")
+        ax2.set_title("XGBoost: Actual vs Predicted (Combined)")
+        ax2.legend(loc='upper left')
+        st.pyplot(fig2)
+        st.markdown(get_image_download_link(fig2, "xgboost_combined"), unsafe_allow_html=True)
+        plt.close(fig2)
     
     elif selected_analysis == "AdaBoost":
         st.subheader("AdaBoost Regression")
@@ -234,6 +295,21 @@ if uploaded_file is not None:
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "adaboost_predictions"), unsafe_allow_html=True)
         plt.close(fig)
+        
+        fig2, ax2 = plt.subplots(figsize=(10, 6))
+        indices = range(len(y_train) + len(y_test))
+        y_actual = pd.concat([pd.Series(y_train), pd.Series(y_test)]).reset_index(drop=True)
+        ax2.plot(range(len(y_train)), y_train, label='Train Actual', color='green')
+        ax2.plot(range(len(y_train)), y_train_pred, label=f'Train Predicted (R² = {r2_train:.3f})', color='blue', linestyle='--')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test, label='Test Actual', color='purple')
+        ax2.plot(range(len(y_train), len(y_train) + len(y_test)), y_test_pred, label=f'Test Predicted (R² = {r2_test:.3f})', color='red', linestyle='--')
+        ax2.set_xlabel("Sample Index")
+        ax2.set_ylabel("Concrete Strength (MPa)")
+        ax2.set_title("AdaBoost: Actual vs Predicted (Combined)")
+        ax2.legend(loc='upper left')
+        st.pyplot(fig2)
+        st.markdown(get_image_download_link(fig2, "adaboost_combined"), unsafe_allow_html=True)
+        plt.close(fig2)
     
     elif selected_analysis == "SHAP Analysis":
         st.subheader("SHAP Analysis (Using Random Forest)")
@@ -285,6 +361,38 @@ if uploaded_file is not None:
         ax.legend(loc='upper left')
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "combined_actual_vs_predicted"), unsafe_allow_html=True)
+        plt.close(fig)
+    
+    elif selected_analysis == "Actual vs Predicted (All Models)":
+        st.subheader("Actual vs Predicted (All Models)")
+        models = {
+            "Random Forest": RandomForestRegressor(random_state=42),
+            "Decision Tree": DecisionTreeRegressor(random_state=42),
+            "KNN": KNeighborsRegressor(),
+            "XGBoost": XGBRegressor(random_state=42),
+            "AdaBoost": AdaBoostRegressor(random_state=42)
+        }
+        
+        fig, ax = plt.subplots(figsize=(12, 8))
+        indices = range(len(y_train) + len(y_test))
+        y_actual = pd.concat([pd.Series(y_train), pd.Series(y_test)]).reset_index(drop=True)
+        ax.plot(indices, y_actual, label='Actual', color='green')
+        
+        for name, model in models.items():
+            model.fit(X_train, y_train)
+            y_train_pred = model.predict(X_train)
+            y_test_pred = model.predict(X_test)
+            r2_train = r2_score(y_train, y_train_pred)
+            r2_test = r2_score(y_test, y_test_pred)
+            y_pred = pd.concat([pd.Series(y_train_pred), pd.Series(y_test_pred)]).reset_index(drop=True)
+            ax.plot(indices, y_pred, label=f'{name} Predicted (Train R² = {r2_train:.3f}, Test R² = {r2_test:.3f})', linestyle='--')
+        
+        ax.set_xlabel("Sample Index")
+        ax.set_ylabel("Concrete Strength (MPa)")
+        ax.set_title("Actual vs Predicted (All Models)")
+        ax.legend(loc='upper left')
+        st.pyplot(fig)
+        st.markdown(get_image_download_link(fig, "all_models_actual_vs_predicted"), unsafe_allow_html=True)
         plt.close(fig)
 
 else:
