@@ -39,11 +39,12 @@ if uploaded_file is not None:
         "KNN",
         "XGBoost",
         "AdaBoost",
-        "SHAP Analysis"
+        "SHAP Analysis",
+        "Combined Actual vs Predicted"
     ]
     selected_analysis = st.selectbox("Select Analysis Type", analysis_options)
     
-    if selected_analysis in ["Random Forest", "Decision Tree", "KNN", "XGBoost", "AdaBoost", "SHAP Analysis"]:
+    if selected_analysis in ["Random Forest", "Decision Tree", "KNN", "XGBoost", "AdaBoost", "SHAP Analysis", "Combined Actual vs Predicted"]:
         X = df.drop('concrete_compressive_strength', axis=1)
         y = df['concrete_compressive_strength']
         X = X.fillna(X.mean())
@@ -256,6 +257,35 @@ if uploaded_file is not None:
         st.pyplot(fig2)
         st.markdown(get_image_download_link(fig2, "shap_force_plot"), unsafe_allow_html=True)
         plt.close(fig2)
+    
+    elif selected_analysis == "Combined Actual vs Predicted":
+        st.subheader("Combined Actual vs Predicted (Using Random Forest)")
+        rf = RandomForestRegressor(random_state=42)
+        rf.fit(X_train, y_train)
+        y_train_pred = rf.predict(X_train)
+        y_test_pred = rf.predict(X_test)
+        r2_train = r2_score(y_train, y_train_pred)
+        r2_test = r2_score(y_test, y_test_pred)
+        
+        st.write(f"Train R² Score: {r2_train:.3f}")
+        st.write(f"Test R² Score: {r2_test:.3f}")
+        
+        y_actual = pd.concat([pd.Series(y_train), pd.Series(y_test)]).reset_index(drop=True)
+        y_train_series = pd.Series(y_train_pred)
+        y_test_series = pd.Series(y_test_pred)
+        
+        fig, ax = plt.subplots(figsize=(10, 6))
+        indices = range(len(y_actual))
+        ax.plot(indices, y_actual, label='Actual', color='green')
+        ax.plot(range(len(y_train_pred)), y_train_series, label=f'Train Predicted (R² = {r2_train:.3f})', color='blue', linestyle='--')
+        ax.plot(range(len(y_train), len(y_train) + len(y_test_pred)), y_test_series, label=f'Test Predicted (R² = {r2_test:.3f})', color='red', linestyle='--')
+        ax.set_xlabel("Sample Index")
+        ax.set_ylabel("Concrete Strength (MPa)")
+        ax.set_title("Combined Actual vs Predicted")
+        ax.legend(loc='upper left')
+        st.pyplot(fig)
+        st.markdown(get_image_download_link(fig, "combined_actual_vs_predicted"), unsafe_allow_html=True)
+        plt.close(fig)
 
 else:
     st.write("Please upload an Excel file to begin analysis.")
