@@ -94,7 +94,7 @@ if uploaded_file is not None:
         y_pred = rf.predict(X_test)
         r2 = r2_score(y_test, y_pred)
         mse = mean_squared_error(y_test, y_pred)
-        st.write(f"R² Score: {r2:.3f}")
+        st.write(f"R² Score: {r conos2:.3f}")
         st.write(f"Mean Squared Error: {mse:.3f}")
         
         # Scatter plot of predictions
@@ -202,9 +202,8 @@ if uploaded_file is not None:
         shap_values = explainer.shap_values(X_test)
         
         # Debugging shapes
-        st.write(f"Shape of X_test: {X_test.shape}")
-        st.write(f"Shape of shap_values: {shap_values.shape}")
-        
+        st.write(f"Shape of X_test: {X_test.shape    
+    
         # Summary plot
         fig, ax = plt.subplots(figsize=(12, 6))
         shap.summary_plot(shap_values, X_test, feature_names=list(X.columns))
@@ -213,8 +212,8 @@ if uploaded_file is not None:
         plt.close(fig)
         
         # Force plot for first prediction
-        fig2, ax2 = plt.subplots(figsize=(12, 4))
-        shap.force_plot(explainer.expected_value, shap_values[0,:], X_test.iloc[0,:], matplotlib=True, show=False, ax=ax2)
+        fig2 = plt.figure(figsize=(12, 4))
+        shap.force_plot(explainer.expected_value, shap_values[0,:], X_test.iloc[0,:], matplotlib=True, show=False)
         st.pyplot(fig2)
         st.markdown(get_image_download_link(fig2, "shap_force_plot"), unsafe_allow_html=True)
         plt.close(fig2)
