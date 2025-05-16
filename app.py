@@ -94,7 +94,7 @@ if uploaded_file is not None:
         y_pred = rf.predict(X_test)
         r2 = r2_score(y_test, y_pred)
         mse = mean_squared_error(y_test, y_pred)
-        st.write(f"R² Score: {r conos2:.3f}")
+        st.write(f"R² Score: {r2:.3f}")
         st.write(f"Mean Squared Error: {mse:.3f}")
         
         # Scatter plot of predictions
@@ -202,8 +202,9 @@ if uploaded_file is not None:
         shap_values = explainer.shap_values(X_test)
         
         # Debugging shapes
-        st.write(f"Shape of X_test: {X_test.shape    
-    
+        st.write(f"Shape of X_test: {X_test.shape}")
+        st.write(f"Shape of shap_values: {shap_values.shape}")
+        
         # Summary plot
         fig, ax = plt.subplots(figsize=(12, 6))
         shap.summary_plot(shap_values, X_test, feature_names=list(X.columns))
