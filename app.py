@@ -54,6 +54,9 @@ if uploaded_file is not None:
     if selected_analysis in ["Random Forest", "Decision Tree", "KNN", "XGBoost", "AdaBoost", "SHAP Analysis"]:
         X = df.drop('concrete_compressive_strength', axis=1)
         y = df['concrete_compressive_strength']
+        # Ensure no NaN values
+        X = X.fillna(X.mean())
+        y = y.fillna(y.mean())
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     # Perform selected analysis
@@ -67,12 +70,14 @@ if uploaded_file is not None:
         plt.tight_layout()
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "distribution_graphs"), unsafe_allow_html=True)
+        plt.close(fig)
     
     elif selected_analysis == "Pairplots":
         st.subheader("Pairplots")
         fig = sns.pairplot(df)
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "pairplots"), unsafe_allow_html=True)
+        plt.close(fig)
     
     elif selected_analysis == "Correlation Heatmap":
         st.subheader("Correlation Heatmap")
@@ -80,6 +85,7 @@ if uploaded_file is not None:
         sns.heatmap(df.corr(), annot=True, cmap='coolwarm', ax=ax)
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "correlation_heatmap"), unsafe_allow_html=True)
+        plt.close(fig)
     
     elif selected_analysis == "Random Forest":
         st.subheader("Random Forest Regression")
@@ -100,6 +106,7 @@ if uploaded_file is not None:
         ax.set_title("Random Forest: Predicted vs Actual")
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "random_forest_predictions"), unsafe_allow_html=True)
+        plt.close(fig)
     
     elif selected_analysis == "Decision Tree":
         st.subheader("Decision Tree Regression")
@@ -120,6 +127,7 @@ if uploaded_file is not None:
         ax.set_title("Decision Tree: Predicted vs Actual")
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "decision_tree_predictions"), unsafe_allow_html=True)
+        plt.close(fig)
     
     elif selected_analysis == "KNN":
         st.subheader("K-Nearest Neighbors Regression")
@@ -140,6 +148,7 @@ if uploaded_file is not None:
         ax.set_title("KNN: Predicted vs Actual")
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "knn_predictions"), unsafe_allow_html=True)
+        plt.close(fig)
     
     elif selected_analysis == "XGBoost":
         st.subheader("XGBoost Regression")
@@ -160,6 +169,7 @@ if uploaded_file is not None:
         ax.set_title("XGBoost: Predicted vs Actual")
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "xgboost_predictions"), unsafe_allow_html=True)
+        plt.close(fig)
     
     elif selected_analysis == "AdaBoost":
         st.subheader("AdaBoost Regression")
@@ -180,6 +190,7 @@ if uploaded_file is not None:
         ax.set_title("AdaBoost: Predicted vs Actual")
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "adaboost_predictions"), unsafe_allow_html=True)
+        plt.close(fig)
     
     elif selected_analysis == "SHAP Analysis":
         st.subheader("SHAP Analysis (Using Random Forest)")
@@ -190,16 +201,23 @@ if uploaded_file is not None:
         explainer = shap.TreeExplainer(rf)
         shap_values = explainer.shap_values(X_test)
         
+        # Debugging shapes
+        st.write(f"Shape of X_test: {X_test.shape}")
+        st.write(f"Shape of shap_values: {shap_values.shape}")
+        
         # Summary plot
         fig, ax = plt.subplots(figsize=(12, 6))
-        shap.summary_plot(shap_values, X_test, feature_names=X.columns, ax=ax)
+        shap.summary_plot(shap_values, X_test, feature_names=list(X.columns))
         st.pyplot(fig)
         st.markdown(get_image_download_link(fig, "shap_summary"), unsafe_allow_html=True)
+        plt.close(fig)
         
         # Force plot for first prediction
-        shap.force_plot(explainer.expected_value, shap_values[0,:], X_test.iloc[0,:], matplotlib=True, show=False)
-        st.pyplot()
-        st.markdown(get_image_download_link(plt.gcf(), "shap_force_plot"), unsafe_allow_html=True)
+        fig2, ax2 = plt.subplots(figsize=(12, 4))
+        shap.force_plot(explainer.expected_value, shap_values[0,:], X_test.iloc[0,:], matplotlib=True, show=False, ax=ax2)
+        st.pyplot(fig2)
+        st.markdown(get_image_download_link(fig2, "shap_force_plot"), unsafe_allow_html=True)
+        plt.close(fig2)
 
 else:
     st.write("Please upload an Excel file to begin analysis.")
