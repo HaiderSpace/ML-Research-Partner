@@ -412,7 +412,7 @@ if uploaded_file is not None:
         st.markdown(get_image_download_link(fig, "all_models_actual_vs_predicted"), unsafe_allow_html=True)
         plt.close(fig)
     
-    # New Section: Graph Explanation using Groq
+   # New Section: Graph Explanation using Groq
     st.subheader("Graph Explanation using Groq")
     graph_options = [
         "Distribution Graphs",
@@ -469,7 +469,7 @@ if uploaded_file is not None:
                         "content": prompt
                     }
                 ],
-                model="mixtral",
+                model="mixtral-8x22b-32768",
             )
             
             explanation = chat_completion.choices[0].message.content
@@ -478,6 +478,5 @@ if uploaded_file is not None:
             
         except Exception as e:
             st.error(f"Error generating explanation: {str(e)}")
-
 else:
     st.write("Please upload an Excel file to begin analysis.")
