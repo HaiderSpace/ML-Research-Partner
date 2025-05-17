@@ -434,7 +434,7 @@ if uploaded_file is not None:
         "Actual vs Predicted (All Models)"
     ]
     selected_graph = st.selectbox("Select Graph to Explain", graph_options)
-    groq_api_key = st.text_input("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", type="password")
+    groq_api_key = st.text_input("Enter your Groq API Key")
     
     if st.button("Get Explanation") and groq_api_key and selected_graph:
         try:
@@ -442,7 +442,7 @@ if uploaded_file is not None:
             graph_descriptions = {
                 "Distribution Graphs": "A set of histograms with kernel density estimation curves for each variable in the concrete strength dataset, arranged in a 3x3 grid, showing the distribution of values for each feature and the target variable (concrete compressive strength).",
                 "Pairplots": "A matrix of scatter plots showing pairwise relationships between all variables in the concrete strength dataset, with histograms or kernel density plots on the diagonal for each variable's distribution.",
-                "Correlation Heatmap": "A heatmap displaying the Pearson correlation coefficients between all pairs of variables in the concrete strength dataset, with values annotated and a color |scale ranging from blue (negative correlation) to red (positive correlation).",
+                "Correlation Heatmap": "A heatmap displaying the Pearson correlation coefficients between all pairs of variables in the concrete strength dataset, with values annotated and a color scale ranging from blue (negative correlation) to red (positive correlation).",
                 "Random Forest Parity Plot": f"A scatter plot comparing actual vs predicted concrete compressive strength using a Random Forest model, with blue points for training data (R² = {r2_train:.3f}) and red points for test data (R² = {r2_test:.3f}), including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
                 "Random Forest Actual vs Predicted": f"A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using a Random Forest model, plotted against sample index, with R² scores of {r2_train:.3f} (train) and {r2_test:.3f} (test).",
                 "Decision Tree Parity Plot": f"A scatter plot comparing actual vs predicted concrete compressive strength using a Decision Tree model, with blue points for training data (R² = {r2_train:.3f}) and red points for test data (R² = {r2_test:.3f}), including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
