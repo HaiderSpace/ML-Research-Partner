@@ -413,70 +413,76 @@ if uploaded_file is not None:
         plt.close(fig)
     
  # New Section: Graph Explanation using Groq
-    st.subheader("Graph Explanation using Groq")
-    graph_options = [
-        "Distribution Graphs",
-        "Pairplots",
-        "Correlation Heatmap",
-        "Random Forest Parity Plot",
-        "Random Forest Actual vs Predicted",
-        "Decision Tree Parity Plot",
-        "Decision Tree Actual vs Predicted",
-        "KNN Parity Plot",
-        "KNN Actual vs Predicted",
-        "XGBoost Parity Plot",
-        "XGBoost Actual vs Predicted",
-        "AdaBoost Parity Plot",
-        "AdaBoost Actual vs Predicted",
-        "SHAP Summary Plot",
-        "SHAP Mean Value Bar Chart",
-        "Combined Actual vs Predicted",
-        "Actual vs Predicted (All Models)"
-    ]
-    selected_graph = st.selectbox("Select Graph to Explain", graph_options)
-    groq_api_key = st.text_input("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")
-    
-    if st.button("Get Explanation") and groq_api_key and selected_graph:
-        try:
-            client = Groq(api_key=groq_api_key)
-            graph_descriptions = {
-                "Distribution Graphs": "A set of histograms with kernel density estimation curves for each variable in the concrete strength dataset, arranged in a 3x3 grid, showing the distribution of values for each feature and the target variable (concrete compressive strength).",
-                "Pairplots": "A matrix of scatter plots showing pairwise relationships between all variables in the concrete strength dataset, with histograms or kernel density plots on the diagonal for each variable's distribution.",
-                "Correlation Heatmap": "A heatmap displaying the Pearson correlation coefficients between all pairs of variables in the concrete strength dataset, with values annotated and a color scale ranging from blue (negative correlation) to red (positive correlation).",
-                "Random Forest Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using a Random Forest model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
-                "Random Forest Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using a Random Forest model, plotted against sample index.",
-                "Decision Tree Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using a Decision Tree model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
-                "Decision Tree Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using a Decision Tree model, plotted against sample index.",
-                "KNN Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using a K-Nearest Neighbors model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
-                "KNN Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using a K-Nearest Neighbors model, plotted against sample index.",
-                "XGBoost Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using an XGBoost model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
-                "XGBoost Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using an XGBoost model, plotted against sample index.",
-                "AdaBoost Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using an AdaBoost model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
-                "AdaBoost Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using an AdaBoost model, plotted against sample index.",
-                "SHAP Summary Plot": "A SHAP summary plot for an XGBoost model, showing the impact of each feature on the model's predictions for concrete compressive strength, with dots representing individual test samples, colored by feature value (red for high, blue for low), and sorted by mean SHAP value.",
-                "SHAP Mean Value Bar Chart": "A bar chart showing the mean absolute SHAP values for each feature in an XGBoost model, indicating the average impact of each feature on predictions of concrete compressive strength, sorted by importance.",
-                "Combined Actual vs Predicted": "A line plot showing actual concrete compressive strength (green) vs predicted values using a Random Forest model (blue dashed for train, red dashed for test), plotted against sample index.",
-                "Actual vs Predicted (All Models)": "A line plot comparing actual concrete compressive strength (green) against predicted values from multiple models (Random Forest, Decision Tree, KNN, XGBoost, AdaBoost), each with dashed lines in different colors, plotted against sample index."
-            }
-            
-            description = graph_descriptions.get(selected_graph, "Graph description not available.")
-            prompt = f"Provide a detailed and descriptive explanation of the following graph in the context of a concrete strength analysis dataset. Do not display the graph, just explain it thoroughly in text, including what the graph shows, its components, what the axes represent, the significance of the colors and lines, and what insights can be drawn from it. Here is the graph description: {description}"
-            
-            chat_completion = client.chat.completions.create(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                model="llama-3.3-70b-versatile",
-            )
-            
-            explanation = chat_completion.choices[0].message.content
-            st.subheader(f"Explanation of {selected_graph}")
-            st.write(explanation)
-            
-        except Exception as e:
-            st.error(f"Error generating explanation: {str(e)}")
+st.subheader("Graph Explanation using Groq")
+
+graph_options = [
+    "Distribution Graphs",
+    "Pairplots",
+    "Correlation Heatmap",
+    "Random Forest Parity Plot",
+    "Random Forest Actual vs Predicted",
+    "Decision Tree Parity Plot",
+    "Decision Tree Actual vs Predicted",
+    "KNN Parity Plot",
+    "KNN Actual vs Predicted",
+    "XGBoost Parity Plot",
+    "XGBoost Actual vs Predicted",
+    "AdaBoost Parity Plot",
+    "AdaBoost Actual vs Predicted",
+    "SHAP Summary Plot",
+    "SHAP Mean Value Bar Chart",
+    "Combined Actual vs Predicted",
+    "Actual vs Predicted (All Models)"
+]
+
+selected_graph = st.selectbox("Select Graph to Explain", graph_options)
+
+# Provide your Groq API key directly here (keep it private and secure)
+groq_api_key = "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"
+
+if st.button("Get Explanation") and selected_graph:
+    try:
+        client = Groq(api_key=groq_api_key)
+
+        graph_descriptions = {
+            "Distribution Graphs": "A set of histograms with kernel density estimation curves for each variable in the concrete strength dataset, arranged in a 3x3 grid, showing the distribution of values for each feature and the target variable (concrete compressive strength).",
+            "Pairplots": "A matrix of scatter plots showing pairwise relationships between all variables in the concrete strength dataset, with histograms or kernel density plots on the diagonal for each variable's distribution.",
+            "Correlation Heatmap": "A heatmap displaying the Pearson correlation coefficients between all pairs of variables in the concrete strength dataset, with values annotated and a color scale ranging from blue (negative correlation) to red (positive correlation).",
+            "Random Forest Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using a Random Forest model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
+            "Random Forest Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using a Random Forest model, plotted against sample index.",
+            "Decision Tree Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using a Decision Tree model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
+            "Decision Tree Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using a Decision Tree model, plotted against sample index.",
+            "KNN Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using a K-Nearest Neighbors model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
+            "KNN Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using a K-Nearest Neighbors model, plotted against sample index.",
+            "XGBoost Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using an XGBoost model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
+            "XGBoost Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using an XGBoost model, plotted against sample index.",
+            "AdaBoost Parity Plot": "A scatter plot comparing actual vs predicted concrete compressive strength using an AdaBoost model, with blue points for training data and red points for test data, including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
+            "AdaBoost Actual vs Predicted": "A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using an AdaBoost model, plotted against sample index.",
+            "SHAP Summary Plot": "A SHAP summary plot for an XGBoost model, showing the impact of each feature on the model's predictions for concrete compressive strength, with dots representing individual test samples, colored by feature value (red for high, blue for low), and sorted by mean SHAP value.",
+            "SHAP Mean Value Bar Chart": "A bar chart showing the mean absolute SHAP values for each feature in an XGBoost model, indicating the average impact of each feature on predictions of concrete compressive strength, sorted by importance.",
+            "Combined Actual vs Predicted": "A line plot showing actual concrete compressive strength (green) vs predicted values using a Random Forest model (blue dashed for train, red dashed for test), plotted against sample index.",
+            "Actual vs Predicted (All Models)": "A line plot comparing actual concrete compressive strength (green) against predicted values from multiple models (Random Forest, Decision Tree, KNN, XGBoost, AdaBoost), each with dashed lines in different colors, plotted against sample index."
+        }
+
+        description = graph_descriptions.get(selected_graph, "Graph description not available.")
+        prompt = (
+            f"Provide a detailed and descriptive explanation of the following graph in the context "
+            f"of a concrete strength analysis dataset. Do not display the graph, just explain it thoroughly "
+            f"in text, including what the graph shows, its components, what the axes represent, the significance "
+            f"of the colors and lines, and what insights can be drawn from it. Here is the graph description: {description}"
+        )
+
+        chat_completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model="llama-3.3-70b-versatile",
+        )
+
+        explanation = chat_completion.choices[0].message.content
+        st.subheader(f"Explanation of {selected_graph}")
+        st.write(explanation)
+
+    except Exception as e:
+        st.error(f"Error generating explanation: {str(e)}")
+
 else:
     st.write("Please upload an Excel file to begin analysis.")
