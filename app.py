@@ -469,7 +469,7 @@ if uploaded_file is not None:
                         "content": prompt
                     }
                 ],
-                model="mixtral-8x7b-32768",
+                model="mixtral",
             )
             
             explanation = chat_completion.choices[0].message.content
