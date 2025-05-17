@@ -412,8 +412,8 @@ if uploaded_file is not None:
         st.markdown(get_image_download_link(fig, "all_models_actual_vs_predicted"), unsafe_allow_html=True)
         plt.close(fig)
     
-# New Section: Graph Explanation using Groq (Technical for Research Papers)
-st.subheader("Graph Explanation using Groq")
+# Graph Explanation Section for Research-Oriented Output
+st.subheader("Graph Explanation using Groq (Research-Level Insights)")
 
 graph_options = [
     "Distribution Graphs",
@@ -437,7 +437,7 @@ graph_options = [
 
 selected_graph = st.selectbox("Select Graph to Explain", graph_options)
 
-# Your secure API key (replace with env var in production)
+# Securely stored API key (replace with environment variable in production)
 groq_api_key = "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"
 
 if st.button("Get Explanation") and selected_graph:
@@ -445,34 +445,37 @@ if st.button("Get Explanation") and selected_graph:
         client = Groq(api_key=groq_api_key)
 
         graph_descriptions = {
-            "Distribution Graphs": "Histogram and KDE plots showing the spread and skewness of each feature and the target variable in the concrete strength dataset.",
-            "Pairplots": "Scatterplots between all features and the target to identify linear/nonlinear relationships, clusters, and potential multicollinearity.",
-            "Correlation Heatmap": "Heatmap of Pearson correlation coefficients among variables to identify multicollinearity and highly influential input features.",
-            "Random Forest Parity Plot": "Parity plot comparing actual vs predicted concrete strength using Random Forest for train and test sets.",
-            "Random Forest Actual vs Predicted": "Line plot comparing actual vs predicted values from Random Forest across the dataset.",
-            "Decision Tree Parity Plot": "Parity plot for Decision Tree showing actual vs predicted compressive strength values.",
-            "Decision Tree Actual vs Predicted": "Temporal line plot for Decision Tree performance on actual vs predicted samples.",
-            "KNN Parity Plot": "KNN parity plot evaluating regression accuracy via visual alignment with the ideal line.",
-            "KNN Actual vs Predicted": "Line plot for KNN showing model consistency across sample indices.",
-            "XGBoost Parity Plot": "XGBoost model parity plot for compressive strength prediction.",
-            "XGBoost Actual vs Predicted": "XGBoost's predicted values plotted against actuals over sample index.",
-            "AdaBoost Parity Plot": "AdaBoost parity plot to assess predictive alignment with actuals.",
-            "AdaBoost Actual vs Predicted": "Time-series styled prediction accuracy assessment of AdaBoost.",
-            "SHAP Summary Plot": "SHAP summary plot reflecting feature-wise impact and variance in prediction.",
-            "SHAP Mean Value Bar Chart": "Bar chart ranking features by their average SHAP importance values.",
-            "Combined Actual vs Predicted": "Comparison of actual values and Random Forest predictions in a line format.",
-            "Actual vs Predicted (All Models)": "Overlay of predictions from all models vs ground truth to compare relative accuracy."
+            "Distribution Graphs": "Distribution plots of input variables (e.g., Cement, Water, Fly Ash, etc.) and the target variable (Compressive Strength) for assessing skewness, kurtosis, and variable spread.",
+            "Pairplots": "Pairwise scatter plots between all variables to evaluate linearity, feature interdependency, and potential clusters in the dataset.",
+            "Correlation Heatmap": "Correlation matrix visualizing pairwise Pearson correlations among all variables including Cement, Slag, Fly Ash, Water, Superplasticizer, Coarse Aggregate, Fine Aggregate, Age, and Compressive Strength.",
+            "Random Forest Parity Plot": "Actual vs predicted compressive strength comparison using Random Forest. Highlights model bias, variance, and regression accuracy.",
+            "Random Forest Actual vs Predicted": "Time-sequenced plot showing Random Forest predictions against actual compressive strength values.",
+            "Decision Tree Parity Plot": "Decision Tree model’s parity analysis reflecting overfitting/underfitting behavior.",
+            "Decision Tree Actual vs Predicted": "Temporal match between actual and Decision Tree predicted compressive strengths.",
+            "KNN Parity Plot": "Parity analysis of K-Nearest Neighbors model showing local generalization capabilities.",
+            "KNN Actual vs Predicted": "Prediction alignment of KNN model across sample index.",
+            "XGBoost Parity Plot": "XGBoost parity graph showcasing fit quality and performance variation.",
+            "XGBoost Actual vs Predicted": "Prediction time-series of XGBoost model over dataset samples.",
+            "AdaBoost Parity Plot": "AdaBoost model's performance evaluation via parity analysis.",
+            "AdaBoost Actual vs Predicted": "Actual vs predicted values sequence for AdaBoost performance monitoring.",
+            "SHAP Summary Plot": "SHAP summary plot for XGBoost revealing individual feature impact and directionality on predictions.",
+            "SHAP Mean Value Bar Chart": "Bar chart showing mean absolute SHAP values, reflecting average feature importance in XGBoost predictions.",
+            "Combined Actual vs Predicted": "Overlay of actual values and Random Forest predictions for overall visual performance.",
+            "Actual vs Predicted (All Models)": "Comprehensive comparison of model predictions vs actual compressive strength across all algorithms."
         }
 
         description = graph_descriptions.get(selected_graph, "Graph description not available.")
+
         prompt = (
-            f"You are a machine learning researcher writing for a top-tier civil engineering or data science journal. "
-            f"Interpret the technical meaning and statistical implications of the following graph's results in the context "
-            f"of predicting concrete compressive strength. Do not describe the appearance of the graph (axes, lines, colors, or visuals). "
-            f"Instead, explain the analytical findings, trends, and significance from a scientific and research-oriented perspective. "
-            f"Include insights such as model performance, overfitting/underfitting, feature importance, predictive accuracy, and variability, "
-            f"depending on the graph type. Be concise, precise, and write in a formal tone suitable for publication. "
-            f"Here is the graph description: {description}"
+            f"Assume you are a senior machine learning researcher with 20 years of experience in civil and structural engineering. "
+            f"You are writing a scientific interpretation for a peer-reviewed paper on concrete compressive strength prediction. "
+            f"Based on the following graph type: '{selected_graph}', provide a highly technical and insightful interpretation. "
+            f"Focus only on the *results*, not on the visual elements of the graph. Interpret the graph analytically, "
+            f"mentioning specific variables (e.g., Cement, Water, Fly Ash, Age) and their influence. Classify variables "
+            f"as having high, moderate, low, or no impact. Identify any model behavior such as overfitting, underfitting, variance, "
+            f"generalization gap, or predictive strength. Your explanation must be in formal scientific tone suitable for "
+            f"top journals like 'Cement and Concrete Composites', 'Engineering Structures', or 'Construction and Building Materials'. "
+            f"Here is the context of the graph: {description}"
         )
 
         chat_completion = client.chat.completions.create(
@@ -481,7 +484,7 @@ if st.button("Get Explanation") and selected_graph:
         )
 
         explanation = chat_completion.choices[0].message.content
-        st.subheader(f"Technical Explanation of {selected_graph}")
+        st.subheader(f"Research-Level Interpretation of {selected_graph}")
         st.write(explanation)
 
     except Exception as e:
