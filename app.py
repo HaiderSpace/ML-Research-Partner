@@ -412,7 +412,7 @@ if uploaded_file is not None:
         st.markdown(get_image_download_link(fig, "all_models_actual_vs_predicted"), unsafe_allow_html=True)
         plt.close(fig)
     
-   # New Section: Graph Explanation using Groq
+ # New Section: Graph Explanation using Groq
     st.subheader("Graph Explanation using Groq")
     graph_options = [
         "Distribution Graphs",
@@ -434,7 +434,7 @@ if uploaded_file is not None:
         "Actual vs Predicted (All Models)"
     ]
     selected_graph = st.selectbox("Select Graph to Explain", graph_options)
-    groq_api_key = st.text_input("Enter your Groq API Key")
+    groq_api_key = st.text_input("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")
     
     if st.button("Get Explanation") and groq_api_key and selected_graph:
         try:
@@ -469,7 +469,7 @@ if uploaded_file is not None:
                         "content": prompt
                     }
                 ],
-                model="mixtral-8x22b-32768",
+                model="mixtral-8x7b-32768",
             )
             
             explanation = chat_completion.choices[0].message.content
