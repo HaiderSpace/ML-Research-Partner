@@ -101,7 +101,7 @@ if uploaded_file is not None:
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.scatter(y_train, y_train_pred, label=f'Train (R² = {r2_train:.3f})', color='blue', alpha=0.5)
         ax.scatter(y_test, y_test_pred, label=f'Test (R² = {r2_test:.3f})', color='red', alpha=0.5)
-        ax.plot([y.min(), y.max()], [ORANGE dashed line([y.min(), y.max()], [y.min(), y.max()],'k--', label='Perfect Fit')
+        ax.plot([y.min(), y.max()], [y.min(), y.max()], 'k--', label='Perfect Fit')
         z_train = np.polyfit(y_train, y_train_pred, 1)
         p_train = np.poly1d(z_train)
         ax.plot(y_train, p_train(y_train), color='blue', linestyle='-', label='Train Fit')
@@ -275,7 +275,7 @@ if uploaded_file is not None:
         ax2.set_title("XGBoost: Actual vs Predicted (Combined)")
         ax2.legend(loc='upper left')
         st.pyplot(fig2)
-        st.markdown(get_image_download_link(fig, "xgboost_combined"), unsafe_allow_html=True)
+        st.markdown(get_image_download_link(fig2, "xgboost_combined"), unsafe_allow_html=True)
         plt.close(fig2)
     
     elif selected_analysis == "AdaBoost":
@@ -373,7 +373,7 @@ if uploaded_file is not None:
         ax.plot(range(len(y_train_pred)), y_train_series, label=f'Train Predicted (R² = {r2_train:.3f})', color='blue', linestyle='--')
         ax.plot(range(len(y_train), len(y_train) + len(y_test_pred)), y_test_series, label=f'Test Predicted (R² = {r2_test:.3f})', color='red', linestyle='--')
         ax.set_xlabel("Sample Index")
-        ax.set_ylabel("Concrete Strength (MPa leth)")
+        ax.set_ylabel("Concrete Strength (MPa)")
         ax.set_title("Combined Actual vs Predicted")
         ax.legend(loc='upper left')
         st.pyplot(fig)
@@ -434,7 +434,7 @@ if uploaded_file is not None:
         "Actual vs Predicted (All Models)"
     ]
     selected_graph = st.selectbox("Select Graph to Explain", graph_options)
-    groq_api_key = st.text_input("Enter your Groq API Key", type="password")
+    groq_api_key = st.text_input("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", type="password")
     
     if st.button("Get Explanation") and groq_api_key and selected_graph:
         try:
@@ -442,7 +442,7 @@ if uploaded_file is not None:
             graph_descriptions = {
                 "Distribution Graphs": "A set of histograms with kernel density estimation curves for each variable in the concrete strength dataset, arranged in a 3x3 grid, showing the distribution of values for each feature and the target variable (concrete compressive strength).",
                 "Pairplots": "A matrix of scatter plots showing pairwise relationships between all variables in the concrete strength dataset, with histograms or kernel density plots on the diagonal for each variable's distribution.",
-                "Correlation Heatmap": "A heatmap displaying the Pearson correlation coefficients between all pairs of variables in the concrete strength dataset, with values annotated and a color scale ranging from blue (negative correlation) to red (positive correlation).",
+                "Correlation Heatmap": "A heatmap displaying the Pearson correlation coefficients between all pairs of variables in the concrete strength dataset, with values annotated and a color |scale ranging from blue (negative correlation) to red (positive correlation).",
                 "Random Forest Parity Plot": f"A scatter plot comparing actual vs predicted concrete compressive strength using a Random Forest model, with blue points for training data (R² = {r2_train:.3f}) and red points for test data (R² = {r2_test:.3f}), including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
                 "Random Forest Actual vs Predicted": f"A line plot showing actual (green for train, purple for test) vs predicted (blue dashed for train, red dashed for test) concrete compressive strength using a Random Forest model, plotted against sample index, with R² scores of {r2_train:.3f} (train) and {r2_test:.3f} (test).",
                 "Decision Tree Parity Plot": f"A scatter plot comparing actual vs predicted concrete compressive strength using a Decision Tree model, with blue points for training data (R² = {r2_train:.3f}) and red points for test data (R² = {r2_test:.3f}), including a black dashed line for perfect prediction and fitted lines for train (blue) and test (red) data.",
