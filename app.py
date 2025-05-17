@@ -14,7 +14,7 @@ from sklearn.metrics import r2_score, mean_squared_error
 import numpy as np
 from groq import Groq
 
-st.title("Concrete Strength Analysis App")
+st.title("ML-Research Partner")
 
 uploaded_file = st.file_uploader("Upload your Excel file (XLSX format)", type=["xlsx"])
 
@@ -413,7 +413,7 @@ if uploaded_file is not None:
         plt.close(fig)
     
 # Graph Explanation Section for Research-Oriented Output
-st.subheader("Graph Explanation using Groq (Research-Level Insights)")
+st.subheader("Graph Explanation (Research-Level Insights)")
 
 graph_options = [
     "Distribution Graphs",
