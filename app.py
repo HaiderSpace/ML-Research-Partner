@@ -434,7 +434,7 @@ if uploaded_file is not None:
         "Actual vs Predicted (All Models)"
     ]
     selected_graph = st.selectbox("Select Graph to Explain", graph_options)
-    groq_api_key = st.text_input("Enter your Groq API Key")
+    groq_api_key = st.text_input("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")
     
     if st.button("Get Explanation") and groq_api_key and selected_graph:
         try:
