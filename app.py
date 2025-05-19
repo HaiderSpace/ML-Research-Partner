@@ -15,7 +15,7 @@ import numpy as np
 from groq import Groq
 
 
-# Display PEC logo on the left and group member contributions on the right
+# Display PEC logo on the extreme left and group member contributions on the extreme right
 col1, col2 = st.columns([1, 2])  # Adjust width ratios if needed
 
 with col1:
