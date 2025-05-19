@@ -14,6 +14,24 @@ from sklearn.metrics import r2_score, mean_squared_error
 import numpy as np
 from groq import Groq
 
+
+# Display PEC logo on the left and group member contributions on the right
+col1, col2 = st.columns([1, 2])  # Adjust width ratios if needed
+
+with col1:
+    st.image("https://images.app.goo.gl/8w3M8UJJFUE7UmXP8", 
+             width=150, caption="Pakistan Engineering Council")
+
+with col2:
+    st.markdown("### Group Members' Contributions")
+    st.markdown("""
+    - **Imran Haider**: Idea development and code writing  
+    - **Saba Jamil**: Deployment and checking  
+    - **Farhat Munir**: Error detection and resolving  
+    - **Musawir Zaman**: Data collection and cleaning  
+    - **Hassan Ashfq**: Presentation
+    """)
+
 st.title("ML-Research Partner")
 
 uploaded_file = st.file_uploader("Upload your Excel file (XLSX format)", type=["xlsx"])
@@ -493,24 +511,3 @@ if st.button("Get Explanation") and selected_graph:
 
 else:
     st.write("Please upload an Excel file to begin analysis.")
-
-
-
-import streamlit as st
-
-# Display PEC logo on the left and group member contributions on the right
-col1, col2 = st.columns([1, 2])  # Adjust width ratios if needed
-
-with col1:
-    st.image("https://images.app.goo.gl/8w3M8UJJFUE7UmXP8", 
-             width=150, caption="Pakistan Engineering Council")
-
-with col2:
-    st.markdown("### Group Members' Contributions")
-    st.markdown("""
-    - **Imran Haider**: Idea development and code writing  
-    - **Saba Jamil**: Deployment and checking  
-    - **Farhat Munir**: Error detection and resolving  
-    - **Musawir Zaman**: Data collection and cleaning  
-    - **Hassan Ashfq**: Presentation
-    """)
