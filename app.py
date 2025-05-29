@@ -439,7 +439,7 @@ graph_options = [
 selected_graph = st.selectbox("Select Graph to Explain", graph_options)
 
 # Securely stored API key (replace with environment variable in production)
-groq_api_key = "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"
+groq_api_key = "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"
 
 if st.button("Get Explanation") and selected_graph:
     try:
